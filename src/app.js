@@ -1,22 +1,23 @@
-
 /* Make a variable with each of the Firebase tools */
 const app = firebase.app();
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 const database = firebase.database();
-
+let userGlobal = ''
 /* Listen when auth status changes */
 auth.onAuthStateChanged(user => {
   if (user) {
+    userGlobal = user
     console.log("Usuario inició sesión", user);
-    document.getElementById("timeLine").style.display="block";
-    document.getElementById("loginPage").style.display="none";
-    toPost.value= "";
+    document.getElementById("timeLine").style.display = "block";
+    document.getElementById("loginPage").style.display = "none";
+    toPost.value = "";
   } else {
+    userGlobal = 'Visitante'
     console.log("Usuario cerró sesión");
-    document.getElementById("timeLine").style.display="none";
-    document.getElementById("loginPage").style.display="block";
+    document.getElementById("timeLine").style.display = "none";
+    document.getElementById("loginPage").style.display = "block";
   }
 });
 
@@ -30,19 +31,19 @@ const login = () => {
   } else {
     loginError.innerHTML = "";
     auth.signInWithEmailAndPassword(email, password)
-    .then(correct => {
-      loginForm.reset();
-    })
-    .catch(error => {
-      let errorCode = error.code;
-      if (errorCode === "auth/user-not-found") {
-        loginError.innerHTML = "⚠️ Usuario no existe. Favor de verificar sus datos";
-      } else if (errorCode === "auth/invalid-email") {
-        loginError.innerHTML = "⚠️ Formato inválido. Verifique su correo electrónico";
-      } else if (errorCode === "auth/wrong-password") {
-        loginError.innerHTML = "⚠️ Contraseña incorrecta. Favor de verificar sus datos";
-      }
-    });
+      .then(correct => {
+        loginForm.reset();
+      })
+      .catch(error => {
+        let errorCode = error.code;
+        if (errorCode === "auth/user-not-found") {
+          loginError.innerHTML = "⚠️ Usuario no existe. Favor de verificar sus datos";
+        } else if (errorCode === "auth/invalid-email") {
+          loginError.innerHTML = "⚠️ Formato inválido. Verifique su correo electrónico";
+        } else if (errorCode === "auth/wrong-password") {
+          loginError.innerHTML = "⚠️ Contraseña incorrecta. Favor de verificar sus datos";
+        }
+      });
   }
 };
 /* End-login function to access to the timeline section */
@@ -55,7 +56,7 @@ const signUp = () => {
   signUpForm.reset();
   loginError.innerHTML = "";
   registerError.innerHTML = "";
-  document.getElementById('id01').style.display="block";
+  document.getElementById('id01').style.display = "block";
 };
 /* End-Sign up function to open sign up modal and reset input values */
 
@@ -75,24 +76,24 @@ const confirmedSignUp = () => {
   } else {
     registerError.innerHTML = "";
     auth.createUserWithEmailAndPassword(registeredEmail, confirmedPassword)
-    .then(correct => {
-      registerModal.innerHTML = `
-      <section class="registerCorrectMessage">
-      <p>Su cuenta se ha registrado correctamente, por favor inicie sesión.</p>
-      <img src="Images/greenCheck.png" alt="Creación de usuario correcta" class="correctRegisterImage"/>
-      </section>
-      `;
-    })
-    .catch(error => {
-      let errorCode = error.code;
-      if (errorCode === "auth/email-already-in-use") {
-        registerError.innerHTML = "⚠️ Ya existe una cuenta con ese correo electrónico";
-      } else if (errorCode === "auth/invalid-email") {
-        registerError.innerHTML = "⚠️ Formato inválido. Verifique su correo electrónico";
-      } else if (errorCode === "auth/weak-password") {
-        registerError.innerHTML = "⚠️ Su contraseña debe contener al menos 6 caracteres";
-      }
-    });
+      .then(correct => {
+        registerModal.innerHTML = `
+<section class="registerCorrectMessage">
+<p>Su cuenta se ha registrado correctamente, por favor inicie sesión.</p>
+<img src="Images/greenCheck.png" alt="Creación de usuario correcta" class="correctRegisterImage"/>
+</section>
+`;
+      })
+      .catch(error => {
+        let errorCode = error.code;
+        if (errorCode === "auth/email-already-in-use") {
+          registerError.innerHTML = "⚠️ Ya existe una cuenta con ese correo electrónico";
+        } else if (errorCode === "auth/invalid-email") {
+          registerError.innerHTML = "⚠️ Formato inválido. Verifique su correo electrónico";
+        } else if (errorCode === "auth/weak-password") {
+          registerError.innerHTML = "⚠️ Su contraseña debe contener al menos 6 caracteres";
+        }
+      });
   }
 };
 /* End-Sign up function to create new user account */
@@ -104,35 +105,35 @@ const barsBack = document.querySelector(".icon");
 const profile = document.getElementById("port");
 const logo = document.getElementById("timelineLogo");
 
-  const mobileMenu =  () => {
-    if (icons.style.display === "block") {
-      icons.style.display = "none";
-      topNav.style.height = "12vh";
-      barsBack.style.backgroundColor="#5BD9CC";
-      profile.style.display = "inline";
-      logo.style.display = "inline";
+const mobileMenu = () => {
+  if (icons.style.display === "block") {
+    icons.style.display = "none";-
+    topNav.style.height = "12vh";
+    barsBack.style.backgroundColor = "#5BD9CC";
+    profile.style.display = "inline";
+    logo.style.display = "inline";
 
-    } else {
-      icons.style.display = "block";
-      topNav.style.height = "28vh";
-      barsBack.style.backgroundColor="#DDD";
-      profile.style.display = "none";
-      logo.style.display = "none";
-      icons.style.height= "28vh";
-    }
-  };
+  } else {
+    icons.style.display = "block";
+    topNav.style.height = "28vh";
+    barsBack.style.backgroundColor = "#DDD";
+    profile.style.display = "none";
+    logo.style.display = "none";
+    icons.style.height = "28vh";
+  }
+};
 /* End-Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
 
 /* Beginning-Function to save the user data */
-function guardarDatos(user){
+function guardarDatos(user) {
   let users = {
-    uid:user.uid,
-    name:user.displayName,
-    email:user.email,
+    uid: user.uid,
+    name: user.displayName,
+    email: user.email,
     photo: user.photoURL
   }
   firebase.database().ref("prueba/" + user.uid)
-  .set(users)
+    .set(users)
 };
 /* End-Function to save the user data */
 
@@ -144,55 +145,54 @@ const toPost = document.getElementById("toPost");
 const createPost = () => {
   let postModal = document.getElementById("w3-form");
   if (toPost.value.length === 0) {
-  document.getElementById("id01").style.display="block";
-  postModal.innerHTML =
-  `<section class="enterContent">
-      <p>⚠️Agrega contenido para publicar</p>
-      </section>
-      `
+    document.getElementById("id01").style.display = "block";
+    postModal.innerHTML =
+      `<section class="enterContent">
+<p>⚠️Agrega contenido para publicar</p>
+</section>
+`
   } else {
 
-  posts.add({
-      // user: auth.user.uid,
-       text: toPost.value,
-       date: new Date(),
-       day: new Date().toLocaleDateString(),
-       hour: new Date().toLocaleTimeString()
-})
-.then(function(docRef) {
-    console.log("Document written with ID: ", docRef.id);
-})
-.catch(function(error) {
-    console.error("Error adding document: ", error);
-});
+    posts.add({
+        // user: auth.user.uid,
+        text: toPost.value,
+        date: new Date(),
+        day: new Date().toLocaleDateString(),
+        hour: new Date().toLocaleTimeString()
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+      });
 
-toPost.value="";
-}
+    toPost.value = "";
+  }
 }
 //End-Function to save post on db
 
 //Beggining-Function to show posts
-  const publishPost = (doc) => {
-
-
-    document.getElementById("timelinePosted").innerHTML+=
-     `<section id="${ doc.id }post" class="publishedPosts">
-        <p  class="pubPost">${ doc.data().text }</p>
-        <footer>
-          <p class="date">Publicado el ${ doc.data().day } ${ doc.data().hour }</p>
-        </footer>
-      </section>
-      <section>
-        <input id="${ doc.id }input" value="${ doc.data().text }" class="edit" size="32" style="display:none"></input>
-        <input id="${ doc.id }submit" class="submit" style="display:none" type="submit" value="Guardar cambios">
-        <button id="${ doc.id }cancel" class="cancel" style="display:none">Cancelar</button>
-      </section>
-      <section id="${doc.id}icons" class="postIcons">
-        <img id="${ doc.id }" class="likeButton" src="Images/like.png" alt="editar" width="20">
-        <img id="${ doc.id }"class="editButton" src="Images/icon-edit.png" alt="editar" width="20"/>
-        <img id="${ doc.id }" class="deleteButton" src="Images/icon-garbage.png"alt="eliminar" width="20">
-      </section>`
-
+const publishPost = (docs) => {
+  docs.forEach((doc) => {
+    document.getElementById("timelinePosted").innerHTML +=
+      `<section id="${ doc.id }post" class="publishedPosts">
+<p  class="pubPost">${ doc.data().text }</p>
+<p  class="pubPost">${ userGlobal.email }</p>
+<footer>
+<p class="date">Publicado el ${ doc.data().day } ${ doc.data().hour }</p>
+</footer>
+</section>
+<section>
+<input id="${ doc.id }input" value="${ doc.data().text }" class="edit" size="32" style="display:none"></input>
+<input id="${ doc.id }submit" class="submit" style="display:none" type="submit" value="Guardar cambios">
+<button id="${ doc.id }cancel" class="cancel" style="display:none">Cancelar</button>
+</section>
+<section id="${doc.id}icons" class="postIcons">
+<img id="${ doc.id }" class="likeButton" src="Images/like.png" alt="editar" width="20">
+<img id="${ doc.id }"class="editButton" src="Images/icon-edit.png" alt="editar" width="20"/>
+<img id="${ doc.id }" class="deleteButton" src="Images/icon-garbage.png"alt="eliminar" width="20">
+</section>`
     //Edit buttons functionality
 
     let editButtons = document.querySelectorAll(".editButton");
@@ -207,69 +207,90 @@ toPost.value="";
         let iconsSect = document.getElementById(editButton.id + "icons");
         let cancelButton = document.getElementById(editButton.id + "cancel");
 
-        cancelButton.style.display="inline";
-        editInput.style.display="block";
-        inputSub.style.display="inline";
-        postToEdit.style.display="none";
-        iconsSect.style.display="none";
+        cancelButton.style.display = "inline";
+        editInput.style.display = "block";
+        inputSub.style.display = "inline";
+        postToEdit.style.display = "none";
+        iconsSect.style.display = "none";
         inputSub.addEventListener("click", () => {
-          editInput.style.display="none";
-          inputSub.style.display="none";
-          cancelButton.style.display="none";
-          postToEdit.style.display="block";
-          iconsSect.style.display="block";
+          editInput.style.display = "none";
+          inputSub.style.display = "none";
+          cancelButton.style.display = "none";
+          postToEdit.style.display = "block";
+          iconsSect.style.display = "block";
           updatePost();
-          });
+        });
         cancelButton.addEventListener("click", () => {
-          editInput.style.display="none";
-          inputSub.style.display="none";
-          cancelButton.style.display="none";
-          postToEdit.style.display="block";
-          iconsSect.style.display="block";
+          editInput.style.display = "none";
+          inputSub.style.display = "none";
+          cancelButton.style.display = "none";
+          postToEdit.style.display = "block";
+          iconsSect.style.display = "block";
         })
       });
 
-
-    /*Begining-Delete post function*/
-    let deleteButtons = document.querySelectorAll(".deleteButton");
-    deleteButtons.forEach(deleteButton => {
-      deleteButton.addEventListener("click", () => {
-        console.log(doc.data().date);
-        //Creating and showing delete Modal
-        document.getElementById('id01').style.display="block";
-        let deleteModal = document.getElementById("w3-form");
-        deleteModal.innerHTML = `
-        <section class="deleteConfirmationMessage">
-        <p>¿Seguro que desea eliminar la publicación?</p>
-        <button type="button" id="${ doc.id }accept" class="deleteAcceptButton">Aceptar</button>
-        <button type="button" id="${ doc.id }cancel" class="deleteCancelButton">Cancelar</button>
-        </section>
-        `;
-        //Adding functionality to the Accept and Cancel modal buttons
-        let deleteAccept = document.getElementById(deleteButton.id + "accept");
-        let deleteCancel = document.getElementById(deleteButton.id + "cancel");
-        /*deleteAccept.addEventListener("click", () => {
-          deletePost();
-        });*/
-        deleteCancel.addEventListener("click", () => {
-          document.getElementById('id01').style.display="none";
+      const updatePost = () => {
+        let myPost = posts.doc(editButton.id);
+        console.log(myPost);
+        let editPostInput = document.getElementById(editButton.id + "input");
+        myPost.set({
+          text: editPostInput.value,
+          date: new Date(),
+          day: new Date().toLocaleDateString(),
+          hour: new Date().toLocaleTimeString()
         });
-      });
+      }
     });
-    const deletePost = () => {
-      let myDeletedPost = posts.doc(deleteButton.id);
-      console.log(myDeletedPost);
-      let deletePostInput = document.getElementById(deleteButton.id + "input");
-      posts.doc("DC").delete().then(function() {
-        console.log("La publicación ");
-      }).catch(function(error) {
-        console.error("Error removing document: ", error);
-      });
-    };
-    /*End-Delete post function*/
+  })
+  let deleteButtons = document.querySelectorAll(".deleteButton");
+  for(let i = 0; i < deleteButtons.length; i++) {
+    deleteButtons[i].addEventListener('click', () => {
+      const postId = event.target.id
+      console.log(postId)
+      // deletePost(postId)
+    })
+  }
 
 
-   // Beginning-Function to edit/update real-time
+}
+/*Begining-Delete post function*/
+
+// deleteButtons.forEach(deleteButton => {
+// deleteButton.addEventListener("click", () => {
+//   console.log(doc.data().date);
+//   //Creating and showing delete Modal
+//   document.getElementById('id01').style.display = "block";
+//   let deleteModal = document.getElementById("w3-form");
+//   deleteModal.innerHTML = `
+//   <section class="deleteConfirmationMessage">
+//   <p>¿Seguro que desea eliminar la publicación?</p>
+//   <button type="button" id="${ doc.id }accept" class="deleteAcceptButton">Aceptar</button>
+//   <button type="button" id="${ doc.id }cancel" class="deleteCancelButton">Cancelar</button>
+//   </section>
+//   `;
+//   //Adding functionality to the Accept and Cancel modal buttons
+//   let deleteAccept = document.getElementById(deleteButton.id + "accept");
+//   let deleteCancel = document.getElementById(deleteButton.id + "cancel");
+//   /*deleteAccept.addEventListener("click", () => {
+//     deletePost();
+//   });*/
+//   deleteCancel.addEventListener("click", () => {
+//     document.getElementById('id01').style.display = "none";
+//   });
+// });
+// });
+const deletePost = (id) => {
+  // let deletePostInput = document.getElementById(deleteButton.id + "input");
+  posts.doc(id).delete().then(function () {
+    console.log("La publicación ");
+  }).catch(function (error) {
+    console.error("Error removing document: ", error);
+  });
+};
+/*End-Delete post function*/
+
+
+// Beginning-Function to edit/update real-time
 
 //   document.addEventListener("DOMContentLoaded", event => {
 //     let myPost = db.collection("posts").doc(editButton.id);
@@ -279,40 +300,37 @@ toPost.value="";
 //        document.querySelector(".pubPost").innerHTML = data.text;
 //     })
 // });
-const updatePost = () => {
 
-  let myPost = posts.doc(editButton.id);
-  console.log(myPost);
-  let editPostInput = document.getElementById(editButton.id + "input");
-  myPost.set({
-    text: editPostInput.value,
-    date: new Date(),
-    day: new Date().toLocaleDateString(),
-    hour: new Date().toLocaleTimeString()
-  });
-}
 
-});
-}
 
 //End-Function to edit/update real-time
 
-  // posts.orderBy("date","desc").get().then((snapshot) => {
-    //   snapshot.docs.forEach(doc => {
-      //       console.log(doc.data());
-      //       publishPost(doc);
-      //   })
-      // });
-      posts.orderBy("date", "desc").onSnapshot(function(doc){
-        document.getElementById("timelinePosted").innerHTML = "";
-        const array = doc.docs;
-        array.forEach(element => {
-          publishPost(element)
-        });
-      })
+// posts.orderBy("date","desc").get().then((snapshot) => {
+//   snapshot.docs.forEach(doc => {
+//       console.log(doc.data());
+//       publishPost(doc);
+//   })
+// });
+
+// - - -- - - -  - - - - -  - - - - -  - - -  - - - -  - - - -  - - - - -  - => Cambios en esta funcion
+// posts.orderBy("date", "desc").onSnapshot(function(doc){
+//   document.getElementById("timelinePosted").innerHTML = "";
+//   const array = doc.docs;
+//   array.forEach(element => {
+//     publishPost(element)
+//   });
+// })
+
+posts.orderBy("date", "desc").onSnapshot(function (doc) {
+  document.getElementById("timelinePosted").innerHTML = "";
+  const array = doc.docs;
+  publishPost(array)
+
+})
+// - - -- - - -  - - - - -  - - - - -  - - -  - - - -  - - - -  - - - - -  - => Cambios en esta funcion
 
 
-  //End-Function to show published posts
+//End-Function to show published posts
 
 /*Beggining- Function to count I like*/
 /*let canvas;
@@ -321,69 +339,69 @@ var button;
 
 const setUp = () =>{
 
-  canvas = createCanvas(100,100);
-  like = 0;
-  button = createButton('click');
-  button.mousePressed(increaseLike);
+canvas = createCanvas(100,100);
+like = 0;
+button = createButton('click');
+button.mousePressed(increaseLike);
 
 
 }
 let ref = database.ref('comunidadescolar');
 
 let data = {
-  post: doc.data().text,
-  score: 1
+post: doc.data().text,
+score: 1
 }
 ref.push(data);
 
 const submitLike = () => {
- let data = {
-   like : like,
- }
-  console.log(data);
-  let ref = database.ref("posts");
-  ref.push(data);
+let data = {
+like : like,
+}
+console.log(data);
+let ref = database.ref("posts");
+ref.push(data);
 };
 
 const increaseLike = () => {
-  like++;
+like++;
 }*/
 
 /*End- Function to count I like*/
 
 /* Beginning-Edit profile user function*/
-const profileUser =  () => {
+const profileUser = () => {
   //<input type = 'file' name= 'fichero' values = '' id = 'fichero' class = 'hidden'>
-  document.getElementById('id01').style.display="block";
-  let  profileModal= document.getElementById("w3-form");
+  document.getElementById('id01').style.display = "block";
+  let profileModal = document.getElementById("w3-form");
   profileModal.innerHTML = `
-  <section class='profileUser'>
-  <h4>Editar perfil de usuario.</h4>
-  <div class ="profileUserImage">
-  <label class='btn btn-file'>
-  <img  class = 'imageUser' id='imageUser' src='Images/user.png' style= 'text-align:center'>
-  </label>
-  </div>
-  <label for="registerNamel">Nombre:</label>
-  <input type="name" id="registerName" class="registerName" name="registerName" placeholder="Ingrese su nombre ..."  required>
-  <label for="registerEmail">Correo electrónico:</label>
-  <input type="email" id="registerEmail" class="registerEmail" name="registerEmail" placeholder="Ingrese correo electrónico...">
-  <button type="button" id="acceptButton" class="acceptButton">Aceptar</button>
-  </section>`
+<section class='profileUser'>
+<h4>Editar perfil de usuario.</h4>
+<div class ="profileUserImage">
+<label class='btn btn-file'>
+<img  class = 'imageUser' id='imageUser' src='Images/user.png' style= 'text-align:center'>
+</label>
+</div>
+<label for="registerNamel">Nombre:</label>
+<input type="name" id="registerName" class="registerName" name="registerName" placeholder="Ingrese su nombre ..."  required>
+<label for="registerEmail">Correo electrónico:</label>
+<input type="email" id="registerEmail" class="registerEmail" name="registerEmail" placeholder="Ingrese correo electrónico...">
+<button type="button" id="acceptButton" class="acceptButton">Aceptar</button>
+</section>`
 
-  fichero.addEventListener('change', function(e){
-    for (let i = 0; i < e.target.files.length; i++){
+  fichero.addEventListener('change', function (e) {
+    for (let i = 0; i < e.target.files.length; i++) {
       let imageFile = e.target.files[i];
       let storageRef = firebase.storage().ref("fotoperfil/" + imageFile.name);
       let uploadTask = storageRef.put(imageFile);
 
       uploadTask.on('state_changed',
 
-      function progress(snapshot){
+        function progress(snapshot) {
 
-         let progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          let progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
 
-         console.log('Upload is ' + progress + '% done');
+          console.log('Upload is ' + progress + '% done');
 
           switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED:
@@ -393,26 +411,28 @@ const profileUser =  () => {
               console.log('Upload is running');
               break;
           }
-        }, function(error) {
+        },
+        function (error) {
 
-        }, function() {
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        },
+        function () {
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
             console.log('File available at', downloadURL);
           });
         });
     }
- });
+  });
 };
 /*End-Edit profile user function */
 
 /*Beginning - Function add contacts */
-const addContacts =  () =>{
-  document.getElementById('id01').style.display="block";
-  let  contactsModal= document.getElementById("w3-form");
+const addContacts = () => {
+  document.getElementById('id01').style.display = "block";
+  let contactsModal = document.getElementById("w3-form");
   contactsModal.innerHTML = `
-  <section class='profileUser'>
-  <h4>Agregar nuevos contactos.</h4>
-  </section>`
+<section class='profileUser'>
+<h4>Agregar nuevos contactos.</h4>
+</section>`
 
 }
 
@@ -422,13 +442,13 @@ const addContacts =  () =>{
 const logOut = () => {
   auth.signOut().then(() => {
     loginError.innerHTML = `
-    <span style='color:#5BD9CC';>&#10004; Ha cerrado sesión correctamente</span>`;
-      icons.style.display === "block"
-      icons.style.display = "none";
-      topNav.style.height = "12vh";
-      barsBack.style.backgroundColor="#5BD9CC";
-      profile.style.display = "inline";
-      logo.style.display = "inline";
+<span style='color:#5BD9CC';>&#10004; Ha cerrado sesión correctamente</span>`;
+    icons.style.display === "block"
+    icons.style.display = "none";
+    topNav.style.height = "12vh";
+    barsBack.style.backgroundColor = "#5BD9CC";
+    profile.style.display = "inline";
+    logo.style.display = "inline";
   });
 };
 /* End-Log out function to close user session */
@@ -439,6 +459,6 @@ document.getElementById("registerConfirm").addEventListener("click", confirmedSi
 document.querySelector(".icon").addEventListener("click", mobileMenu);
 document.getElementById("postButton").addEventListener("click", createPost);
 document.getElementById("profileButton").addEventListener("click", profileUser);
-document.getElementById("contactsButton").addEventListener("click",addContacts);
+document.getElementById("contactsButton").addEventListener("click", addContacts);
 document.getElementById("settingsButton").addEventListener("click", logOut);
 //document.getElementById("").addEventListener("click",sumitLike);
